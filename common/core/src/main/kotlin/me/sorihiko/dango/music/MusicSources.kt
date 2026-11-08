@@ -41,7 +41,7 @@ object MusicSources {
         override fun search(query: String) = NeteaseApi.search(query)
         override fun songUrl(track: NeteaseTrack) = NeteaseApi.songUrl(track)
         override fun lyrics(track: NeteaseTrack) = NeteaseApi.lyrics(track)
-        override fun playlists(): List<NeteasePlaylist> {
+        override fun playlistTracks(id: Long) = if (SpotifyImport.owns(id)) SpotifyImport.tracks(id) else when (id) {
             NeteaseApi.ensureCookieFile()
             val lists = NeteaseApi.userPlaylists()
             return if (NeteaseApi.loggedIn) lists + NeteasePlaylist(NeteaseApi.CLOUD_ID, me.sorihiko.dango.i18n.I18n.text("Cloud drive"), 0, "", false) else lists
